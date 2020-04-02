@@ -80,3 +80,52 @@ Arrival time <= Execution time
     }
     k++;
   }
+waitingTime[0] = 0;
+  for(i=1;i<n;i++)
+  {
+    sum += burstTime[i-1];
+    waitingTime[i] = sum - arrivalTime[i];
+    wait_final += waitingTime[i]; 
+  }
+  wait_avg = wait_final/n;
+  for(i=0;i<n;i++)
+  {
+    sum2 += burstTime[i];
+    turnaroundTime[i] = sum2 - arrivalTime[i];
+    turnaround_final += turnaroundTime[i];
+  }
+  turnaround_avg=turnaround_final/n;
+printf("\nNow the values become\n");
+  printf("\t\t\t( Process | Arrival Time | Burst Time |  Waiting Time  |  Turn Around Time  )\n");
+  for(i=0;i<n;i++)
+  {
+    printf("\t\t\t|  P[%0.0lf]|  %0.0lf | %0.0lf | %0.0lf | %0.0lf |\n",process[i],arrivalTime[i],burstTime[i],waitingTime[i],turnaroundTime[i]);
+  }
+
+  /*Now arranging the priority of the processes
+      Priority = 1+ Waiting time / Estimated run time
+  */
+  completionTime[0] = burstTime[0];
+  for(i=1;i<n;i++)
+  {
+    completionTime[i] = completionTime[i-1] + burstTime[i];
+  }
+
+  for(i=0;i<n;i++)
+  {
+	  priority[i] = 1+waitingTime[i]/completionTime[i];
+    printf("%lf\n",priority[i]);
+  }
+  printf("\nFinal Values are\n");
+  printf("\t\t\t( Process | Arrival Time | Burst Time |  Waiting Time  |  Turn Around Time  )\n");
+  printf("\t\t\t|  P[%0.0lf] | %0.0lf | %0.0lf | %0.0lf | %0.0lf |\n",process[0],arrivalTime[0],burstTime[0],waitingTime[0],turnaroundTime[0]);
+  for(i=n-1;i>0;i--)
+  {
+    printf("\t\t\t|  P[%0.0lf] | %0.0lf | %0.0lf | %0.0lf | %0.0lf |\n",process[i],arrivalTime[i],burstTime[i],waitingTime[i],turnaroundTime[i]);
+  }
+  printf("\n\n\n\t\t\tAverage Turn Around Time : %lf",turnaround_avg);
+  printf("\n\t\t\tAverage Waiting Time     : %lf\n\n",wait_avg);
+	
+  getch();
+  return 0;
+}
